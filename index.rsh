@@ -20,12 +20,16 @@ export const main = Reach.App(() => {
   })
   Alice.publish(handAlice);//lice join the application by publishing the value to the consensus network, so it can be used to evaluate the outcome of the game
   commit();//commits the state of the consensus network and returns to "local step" where individual participants can act alone.
-});
-Bob.only( ()=>{
+
+
+  Bob.only( ()=>{
     const handBob = declassify(interact.getHand());
-})
+});
 Bob.publish(handBob);
-const outcome =(handAlice + (4 -handBob)% 3;
+const outcome =(handAlice + (4 - handBob)) % 3 ;
 commit();
+});
+
+
 //building a version of Rock, Paper, Scissors! where two players,
 // Alice and Bob, can wager on the result of the game
