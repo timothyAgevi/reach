@@ -26,8 +26,13 @@ export const main = Reach.App(() => {
     const handBob = declassify(interact.getHand());
 });
 Bob.publish(handBob);
-const outcome =(handAlice + (4 - handBob)) % 3 ;
+const outcome =(handAlice + (4 - handBob)) % 3 ;// computes outcome
+/* onsider when handAlice is 0 (i.e., Rock) and handBob is 2 (i.e., Scissors),
+ then this equation is ((handAlice + (4 - handBob)) % 3) = ((0 + (4 - 2)) % 3) = ((0 + 2) % 3) = (2 % 3) = 2*/
 commit();
+each([Alice, Bob], () => { //local step that each of the participants performs
+    interact.seeOutcome(outcome);
+  });
 });
 
 
