@@ -1,5 +1,3 @@
-//building a version of Rock, Paper, Scissors! where two players,
-// Alice and Bob, can wager on the result of the game
 'reach 0.1';
 export const main = Reach.App(() => {
   const Alice = Participant('Alice', {
@@ -11,3 +9,5 @@ export const main = Reach.App(() => {
   init();
   // write your program here
 });
+//building a version of Rock, Paper, Scissors! where two players,
+// Alice and Bob, can wager on the result of the game
