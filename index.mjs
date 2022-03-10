@@ -1,5 +1,5 @@
-import { loadStdlib } from '@reach-sh/stdlib';
-import * as backend from './build/index.main.mjs';
+import { loadStdlib}from '@reach-sh/stdlib'; //imports reach std library loader
+import * as backend from './build/index.main.mjs';//import backend that ./reach comile will produce
 const stdlib = loadStdlib();
 
 const startingBalance = stdlib.parseCurrency(100);
