@@ -18,11 +18,13 @@ export const main = Reach.App(() => {
   init();  // write your program here
   Alice.only( ()=>{//code performed by alice only
       //he backend for Alice interacts with its frontend, gets Alice's hand, and publishes it
-      const handAlice = declassify(interact.getHand());// binds that value to the result of interacting with Alice 
+      const wager =declassify(interact.wager);
+      const handAlice = declassify(interact
+        .getHand());// binds that value to the result of interacting with Alice 
   })
   //lice join the application by publishing the value to the consensus network, so it can be used to evaluate the outcome of the game
   Alice.publish(wager,handAlice)
-        .pay(wager);//r transfer the amount as part of her publication
+       .pay(wager);//r transfer the amount as part of her publication      
   commit();//commits the state of the consensus network and returns to "local step" where individual participants can act alone.
 
 
