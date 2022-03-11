@@ -5,6 +5,7 @@ const stdlib = loadStdlib();//loads the standard library dynamically based on th
 const startingBalance = stdlib.parseCurrency(100);//defines a quantity of network tokens as the starting balance for each test account.
 const accAlice = await stdlib.newTestAccount(startingBalance);//
 const accBob = await stdlib.newTestAccount(startingBalance);
+const fmt = (x) => stdlib.formatCurrency(x, 4);//function for displaying currency amounts with up to 4 decimal places
 //create test accounts with initial endowments for Alice and Bob.
 const ctcAlice = accAlice.contract(backend);//Alice deploy the application.
 const ctcBob = accBob.contract(backend, ctcAlice.getInfo());// Bob attach to it
