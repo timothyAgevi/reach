@@ -13,6 +13,7 @@ export const main = Reach.App(() => {
   const Bob   = Participant('Bob', {
    // Specify Bob's interact interface here
    ...Player,
+   acceptWager: Fun([UInt], Null),
   });
   init();  // write your program here
   Alice.only( ()=>{//code performed by alice only
