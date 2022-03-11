@@ -44,7 +44,7 @@ Bob.publish(handBob)
 const outcome =(handAlice + (4 - handBob)) % 3 ;// computes outcome
 /* onsider when handAlice is 0 (i.e., Rock) and handBob is 2 (i.e., Scissors),
  then this equation is ((handAlice + (4 - handBob)) % 3) = ((0 + (4 - 2)) % 3) = ((0 + 2) % 3) = (2 % 3) = 2*/
- const [ forAlice,forBob]=outcome==2?[ ,0]:outcome == 0?[ 0,2]:[1,1];/*compute the amounts given to each participant depending on the outcome by
+ const [ forAlice,forBob]=outcome==2?[ 2,0]:outcome == 0?[ 0,2]:[1,1];/*compute the amounts given to each participant depending on the outcome by
   determining how many wager amounts each party gets
 
 - If the outcome is 2, Alice wins, then she gets two portions; 
