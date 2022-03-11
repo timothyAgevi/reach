@@ -9,6 +9,7 @@ run_d () {
   REACH_HS="$(cd "$(dirname "$0")" && pwd)/hs"
   export REACH_DIR_EMBED="${REACH_DIR_EMBED:-"$(cd "$(dirname "$0")" && pwd)/hs/app/reach/embed"}"
   export REACH_STACK_YAML="${REACH_STACK_YAML:-"$(cd "$(dirname "$0")" && pwd)/hs/stack.yaml"}"
+  export REACH_CONNECTOR_MODE="ALGO"
 
   if  [ "$REACH_DOCKER" = "0"  ] \
    && [ -d "$REACH_DIR_EMBED"  ] \
