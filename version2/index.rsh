@@ -22,3 +22,14 @@ forall(UInt, handAlice =>
     getHand: Fun([], UInt),
     seeOutcome: Fun([UInt], Null),
   };
+  // reach app and interfaces
+  export const main = Reach.App(() => {
+    const Alice = Participant('Alice', {
+      ...Player,
+      wager: UInt,
+    });
+    const Bob   = Participant('Bob', {
+      ...Player,
+      acceptWager: Fun([UInt], Null),
+    });
+    init()});
