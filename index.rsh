@@ -30,7 +30,8 @@ export const main = Reach.App(() => {
     interact.acceptWager(wager);
     const handBob = declassify(interact.getHand());
 });
-Bob.publish(handBob);
+Bob.publish(handBob)
+   .pay(wager)
 const outcome =(handAlice + (4 - handBob)) % 3 ;// computes outcome
 /* onsider when handAlice is 0 (i.e., Rock) and handBob is 2 (i.e., Scissors),
  then this equation is ((handAlice + (4 - handBob)) % 3) = ((0 + (4 - 2)) % 3) = ((0 + 2) % 3) = (2 % 3) = 2*/
