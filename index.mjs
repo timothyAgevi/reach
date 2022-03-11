@@ -7,6 +7,9 @@ const accAlice = await stdlib.newTestAccount(startingBalance);//
 const accBob = await stdlib.newTestAccount(startingBalance);
 const fmt = (x) => stdlib.formatCurrency(x, 4);//function for displaying currency amounts with up to 4 decimal places
 const getBalance = async (who) => fmt(await stdlib.balanceOf(who));// getting the balance of a participant and displaying it with up to 4 decimal places.
+//getting balance of participants before game starts
+const beforeAlice = await getBalance(accAlice);
+const beforeBob = await getBalance(accBob);
 //create test accounts with initial endowments for Alice and Bob.
 const ctcAlice = accAlice.contract(backend);//Alice deploy the application.
 const ctcBob = accBob.contract(backend, ctcAlice.getInfo());// Bob attach to it
