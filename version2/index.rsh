@@ -18,7 +18,7 @@ forall(UInt, handAlice =>
  assert(winner(hand, hand) == DRAW));   
  //frontend for each participant providing acess to random nmbers
  const Player = {
-    ...hasRandom, // <--- new!
+    ...hasRandom, // <--- new!  ,used to generate random number to protect Alice's hand
     getHand: Fun([], UInt),
     seeOutcome: Fun([UInt], Null),
   };
