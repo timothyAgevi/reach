@@ -9,3 +9,7 @@ const winner = (handAlice, handBob) =>
 assert(winner(ROCK, PAPER) == B_WINS);
 assert(winner(PAPER, ROCK) == A_WINS);
 assert(winner(ROCK, ROCK) == DRAW);
+//no matter what values are provided for handAlice and handBob, winner will always provide a valid outcome:
+forall(UInt, handAlice =>
+    forall(UInt, handBob =>
+      assert(isOutcome(winner(handAlice, handBob)))));
