@@ -1,5 +1,5 @@
 const Player = (Who) => ({
-    ...stdlib.hasRandom, // <--- new!
+    ...stdlib.hasRandom, // <--- new!,implementation of rabdom that the frontend provides to the backend
     getHand: () => {
       const hand = Math.floor(Math.random() * 3);
       console.log(`${Who} played ${HAND[hand]}`);
