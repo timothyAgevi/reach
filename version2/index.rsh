@@ -13,3 +13,12 @@ assert(winner(ROCK, ROCK) == DRAW);
 forall(UInt, handAlice =>
     forall(UInt, handBob =>
       assert(isOutcome(winner(handAlice, handBob)))));
+ //whenever the same value is provided for both hands, no matter what it is, winner always returns DRAW
+ forall(UInt, (hand) =>
+ assert(winner(hand, hand) == DRAW));   
+ //frontend for each participant providing acess to random nmbers
+ const Player = {
+    ...hasRandom, // <--- new!
+    getHand: Fun([], UInt),
+    seeOutcome: Fun([UInt], Null),
+  };
