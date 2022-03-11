@@ -40,6 +40,10 @@ await Promise.all([
     },
   }),
 ]);
-
+//get balance afterwards
 const afterAlice = await getBalance(accAlice);
 const afterBob = await getBalance(accBob);
+
+//print balance afterwards(effect)
+console.log('Alice went from ${beforeAlice} to ${afterAlice}.')
+console.log(`Bob went from ${beforeBob} to ${afterBob}.`);
