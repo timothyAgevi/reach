@@ -34,6 +34,9 @@ await Promise.all([
   }),
   ctcBob.p.Bob({
     // implement Bob's interact object here
-    ...Player('Bob')
+    ...Player('Bob'),
+    acceptWager: (amt) => {
+      console.log(`Bob accepts the wager of ${fmt(amt)}.`);//show wageer and immedetely accept it by returning it
+    },
   }),
 ]);
