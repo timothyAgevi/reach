@@ -27,6 +27,7 @@ export const main = Reach.App(() => {
 
 
   Bob.only( ()=>{
+    interact.acceptWager(wager);
     const handBob = declassify(interact.getHand());
 });
 Bob.publish(handBob);
