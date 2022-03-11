@@ -8,6 +8,7 @@ export const main = Reach.App(() => {
   const Alice = Participant('Alice', {
     // Specify Alice's interact interface here
     ...Player,
+    wager: UInt,
   });
   const Bob   = Participant('Bob', {
    // Specify Bob's interact interface here
