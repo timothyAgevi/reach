@@ -40,3 +40,6 @@ await Promise.all([
     },
   }),
 ]);
+
+const afterAlice = await getBalance(accAlice);
+const afterBob = await getBalance(accBob);
