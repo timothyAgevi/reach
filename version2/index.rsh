@@ -32,4 +32,16 @@ forall(UInt, handAlice =>
       ...Player,
       acceptWager: Fun([UInt], Null),
     });
-    init()});
+    init() 
+  //enable Alice publish her hand but also keep it secret using makeCommitment
+  Alice.only(() => {
+    const wager = declassify(interact.wager);
+    const _handAlice = interact.getHand();
+    const [_commitAlice, _saltAlice] = makeCommitment(interact, _handAlice);
+    const commitAlice = declassify(_commitAlice);
+  });
+  Alice.publish(wager, commitAlice)
+    .pay(wager);
+  commit();
+  
+  });
