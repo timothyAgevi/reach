@@ -30,7 +30,7 @@ await Promise.all([
   ctcAlice.p.Alice({
     // implement Alice's interact object here
     ...Player('Alice'),//splices the common Player interface into Alice's interface.
-    wager: stdlib.parseCurrency(5),
+    wager: stdlib.parseCurrency(5),//defines her wager as 5 units of the network token
   }),
   ctcBob.p.Bob({
     // implement Bob's interact object here
