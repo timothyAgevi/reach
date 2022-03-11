@@ -29,7 +29,8 @@ const Player = (Who) => ({// constructor for player implementation
 await Promise.all([
   ctcAlice.p.Alice({
     // implement Alice's interact object here
-    ...Player('Alice')
+    ...Player('Alice'),//splices the common Player interface into Alice's interface.
+    wager: stdlib.parseCurrency(5),
   }),
   ctcBob.p.Bob({
     // implement Bob's interact object here
