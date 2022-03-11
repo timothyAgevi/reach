@@ -42,152 +42,35 @@ forall(UInt, handAlice =>
   });
   Alice.publish(wager, commitAlice)//publish
     .pay(wager);// wager fund in publication
-
-
-    unknowable(Bob, Alice(_handAlice, _saltAlice));
-  commit();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
+   commit();//siko sure
+
+  unknowable(Bob,Alice(_handAlice,_saltAlice));//states the knowledge assertion
+  Bob.only(() => {
+    interact.acceptWager(wager);
+    const handBob = declassify(interact.getHand());
   });
+  Bob.publish(handBob)
+    .pay(wager);
+  commit();//transaction commit, without computing the payout, because we can't yet, because Alice's hand is not yet public.
+  //Alice who can reveal her secrets
+  Alice.only(() => {// declassify secret 
+    const saltAlice = declassify(_saltAlice);
+    const handAlice = declassify(_handAlice);
+  });
+  Alice.publish(saltAlice, handAlice);// publish secret
+  checkCommitment(commitAlice, saltAlice, handAlice);//checks that the published values match the original values.
+  //Always case for honest but dishonest participants may violate this
+
+const outcome = winner(handAlice,handBob);
+const                 [forAlice, forBob] =
+  outcome == A_WINS ? [       2,      0] :
+  outcome == B_WINS ? [       0,      2] :
+  /* tie           */ [       1,      1];
+transfer(forAlice * wager).to(Alice);
+transfer(forBob   * wager).to(Bob);
+commit();
+
+each([Alice, Bob], () => {
+  interact.seeOutcome(outcome);
+});
+});
