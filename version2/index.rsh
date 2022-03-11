@@ -36,12 +36,158 @@ forall(UInt, handAlice =>
   //enable Alice publish her hand but also keep it secret using makeCommitment
   Alice.only(() => {
     const wager = declassify(interact.wager);
-    const _handAlice = interact.getHand();
-    const [_commitAlice, _saltAlice] = makeCommitment(interact, _handAlice);
-    const commitAlice = declassify(_commitAlice);
+    const _handAlice = interact.getHand();//Alice compute her hand, but not declassify it
+    const [_commitAlice, _saltAlice] = makeCommitment(interact, _handAlice);//compute comitment,interact since it has salt value generated bu random func inside hasrandom
+    const commitAlice = declassify(_commitAlice);//declassify commitment
   });
-  Alice.publish(wager, commitAlice)
-    .pay(wager);
+  Alice.publish(wager, commitAlice)//publish
+    .pay(wager);// wager fund in publication
+
+
+    unknowable(Bob, Alice(_handAlice, _saltAlice));
   commit();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
   });
