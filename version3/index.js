@@ -82,9 +82,8 @@ class Attacher extends Player {//provide the acceptWager callback,
   }//define the acceptWager callback
   async acceptWager(wagerAtomic) { // Fun([UInt], Null)
     const wager = reach.formatCurrency(wagerAtomic, 4);
-    //set the component state to display Accept Terms dialog, and wait for a Promise which can be resolved via user interaction
-    return await new Promise(resolveAcceptedP => {
-      this.setState({view: 'AcceptTerms', wager, resolveAcceptedP});
+      return await new Promise(resolveAcceptedP => {//set the component state to display Accept Terms dialog, 
+      this.setState({view: 'AcceptTerms', wager, resolveAcceptedP});//and wait for a Promise which can be resolved via user interaction
     });
   }
   termsAccepted() {
