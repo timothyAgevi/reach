@@ -50,36 +50,32 @@ forall(UInt, handAlice =>
       .pay(wager);
     commit();
   
-    Bob.only(() => {
+    Bob.only(() => {//Bob pay the wager
       interact.acceptWager(wager);
     });
     Bob.pay(wager)
       .timeout(relativeTime(deadline), () => closeTo(Alice, informTimeout));
-  
+  //does not have this consensus step commit
     var outcome = DRAW;
-    invariant( balance() == 2 * wager && isOutcome(outcome) );
-    while ( outcome == DRAW ) {
-      commit();
+    invariant( balance() == 2 * wager && isOutcome(outcome) );//tates the invariant that the body of the loop does not change the balance in the contract account and that outcome is a valid outcome
+    while ( outcome == DRAW ) {//continues as long as the outcome is a draw
+      commit();//commits the last transaction, which at the start of the loop is Bob's acceptance of the wager, and at subsequent runs of the loop is Alice's publication of her hand.
     //enable Alice publish her hand but also keep it secret using makeCommitment
   Alice.only(() => {
-    
     const _handAlice = interact.getHand();//Alice compute her hand, but not declassify it
     const [_commitAlice, _saltAlice] = makeCommitment(interact, _handAlice);//compute comitment,interact since it has salt value generated bu random func inside hasrandom
     const commitAlice = declassify(_commitAlice);//declassify commitment
-    
-  });
+      });
   Alice.publish(commitAlice)//publish also the deadline
    .timeout(relativeTime(deadline), () => closeTo(Bob, informTimeout));
    commit();//siko sure
-
+//line64 t0 71 wager is already known and paid.
   unknowable(Bob,Alice(_handAlice,_saltAlice));//states the knowledge assertion
   Bob.only(() => {
-    
     const handBob = declassify(interact.getHand());
   });
   Bob.publish(handBob)
- 
-    .timeout(relativeTime(deadline), () => closeTo(Alice, informTimeout));//adds a timeout handler to Bob's publication
+     .timeout(relativeTime(deadline), () => closeTo(Alice, informTimeout));//adds a timeout handler to Bob's publication
   commit();//transaction commit, without computing the payout, because we can't yet, because Alice's hand is not yet public.
   //Alice who can reveal her secrets
   Alice.only(() => {// declassify secret 
@@ -90,9 +86,8 @@ forall(UInt, handAlice =>
   .timeout(relativeTime(deadline), () => closeTo(Bob, informTimeout));//timeout handler to Alice's second message
   checkCommitment(commitAlice, saltAlice, handAlice);//checks that the published values match the original values.
   //Always case for honest but dishonest participants may violate this
-
    outcome = winner(handAlice,handBob);//updates the outcome loop variable with the new value
-   continue;
+   continue;//Reach requires that continue be explicitly written in the loop body
 }
 
 assert(outcome == A_WINS || outcome == B_WINS);
