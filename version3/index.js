@@ -40,17 +40,17 @@ class App extends React.Component {
 }
 
 class Player extends React.Component {
-  random() { return reach.hasRandom.random(); }
+  random() { return reach.hasRandom.random(); }//random callback
   async getHand() { // Fun([], UInt)
-    const hand = await new Promise(resolveHandP => {
+    const hand = await new Promise(resolveHandP => {// set the component state to display Get Hand dialog, and wait for a Promise which can be resolved via user interaction
       this.setState({view: 'GetHand', playable: true, resolveHandP});
     });
-    this.setState({view: 'WaitingForResults', hand});
+    this.setState({view: 'WaitingForResults', hand});// occurs after the Promise is resolved,sets the component state to display Waiting for results display.
     return handToInt[hand];
   }
-  seeOutcome(i) { this.setState({view: 'Done', outcome: intToOutcome[i]}); }
-  informTimeout() { this.setState({view: 'Timeout'}); }
-  playHand(hand) { this.state.resolveHandP(hand); }
+  seeOutcome(i) { this.setState({view: 'Done', outcome: intToOutcome[i]}); }//display Done display
+  informTimeout() { this.setState({view: 'Timeout'}); }//display timeout display
+  playHand(hand) { this.state.resolveHandP(hand); }//define what happens when the user clicks Rock, Paper, or Scissors: The Promise from line 45 is resolved
 }
 
 class Deployer extends Player {
