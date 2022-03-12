@@ -15,7 +15,7 @@ exports.Wrapper = class extends React.Component {
     );
   }
 }
-
+//Connect Account dialog
 exports.ConnectAccount = class extends React.Component {
   render() {
     return (

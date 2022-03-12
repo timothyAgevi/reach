@@ -29,16 +29,17 @@ class App extends React.Component {
       this.setState({view: 'DeployerOrAttacher'});//if false,set the component state to skip to Choose Role.
     }
   }
+  //Fund Account dialog
   async fundAccount(fundAmount) {// lines 32 thru 35, we define what happens when the user clicks the Fund Account button
     await reach.fundFromFaucet(this.state.acc, reach.parseCurrency(fundAmount));
     this.setState({view: 'DeployerOrAttacher'});//set the component state to display Choose Role
   }
   async skipFundAccount() { this.setState({view: 'DeployerOrAttacher'}); }// define what to do when the user clicks the Skip button, which is to set the component state to display Choose Role.
-  selectAttacher() { this.setState({view: 'Wrapper', ContentView: Attacher}); }
-  selectDeployer() { this.setState({view: 'Wrapper', ContentView: Deployer}); }
+  selectAttacher() { this.setState({view: 'Wrapper', ContentView: Attacher}); }//sub component for Attacher
+  selectDeployer() { this.setState({view: 'Wrapper', ContentView: Deployer}); }//sub-cpmponent for deployer
   render() { return renderView(this, AppViews); }// render the appropriate view from rps-9-web/views/AppViews.js.
 }
-
+//callbacks for participant intaract interface
 class Player extends React.Component {
   random() { return reach.hasRandom.random(); }//random callback
   async getHand() { // Fun([], UInt)
