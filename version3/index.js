@@ -70,7 +70,7 @@ class Deployer extends Player {
   }
   render() { return renderView(this, DeployerViews); }//render the appropriate view from DeployerViews
 }
-class Attacher extends Player {
+class Attacher extends Player {//provide the acceptWager callback,
   constructor(props) {
     super(props);
     this.state = {view: 'Attach'};
