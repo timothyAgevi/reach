@@ -51,7 +51,7 @@ exports.Deploy = class extends React.Component {
     );
   }
 }
-
+//Deploying display
 exports.Deploying = class extends React.Component {
   render() {
     return (
