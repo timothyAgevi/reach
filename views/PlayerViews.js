@@ -52,7 +52,7 @@ exports.Done = class extends React.Component {
     );
   }
 }
-
+//display when the player sees a timeout
 exports.Timeout = class extends React.Component {
   render() {
     return (
