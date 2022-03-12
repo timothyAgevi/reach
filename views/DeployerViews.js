@@ -59,7 +59,7 @@ exports.Deploying = class extends React.Component {
     );
   }
 }
-
+//Waiting for Attacher display ,upto line 90
 exports.WaitingForAttacher = class extends React.Component {
   async copyToClipborad(button) {
     const {ctcInfoStr} = this.props;
