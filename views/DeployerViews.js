@@ -16,7 +16,7 @@ exports.Wrapper = class extends React.Component {
     );
   }
 }
-
+//Set Wager dialog
 exports.SetWager = class extends React.Component {
   render() {
     const {parent, defaultWager, standardUnit} = this.props;
