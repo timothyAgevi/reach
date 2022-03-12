@@ -35,6 +35,12 @@ forall(UInt, handAlice =>
       acceptWager: Fun([UInt], Null),
     });
     init() 
+
+    const informTimeout = () => {
+      each([Alice, Bob], () => {
+        interact.informTimeout();
+      });
+    };
   //enable Alice publish her hand but also keep it secret using makeCommitment
   Alice.only(() => {
     const wager = declassify(interact.wager);
