@@ -61,9 +61,9 @@ class Deployer extends Player {
   setWager(wager) { this.setState({view: 'Deploy', wager}); }//set component state to display Deploy dialog when user click set Wager button
   async deploy() {// thru line 62 -69://define what to do when the user clicks  Deploy button
     const ctc = this.props.acc.contract(backend);// call acc.deploy, which triggers a deploy of the contract
-    this.setState({view: 'Deploying', ctc});
-    this.wager = reach.parseCurrency(this.state.wager); // UInt provide the wager
-    this.deadline = {ETH: 10, ALGO: 100, CFX: 1000}[reach.connector]; // UInt deadline values
+    this.setState({view: 'Deploying', ctc});//set the component state to display Deploying display.
+    this.wager = reach.parseCurrency(this.state.wager); // UInt provide the wager ,set the wager property
+    this.deadline = {ETH: 10, ALGO: 100, CFX: 1000}[reach.connector]; // UInt deadline values,
     backend.Alice(ctc, this);
     const ctcInfoStr = JSON.stringify(await ctc.getInfo(), null, 2);
     this.setState({view: 'WaitingForAttacher', ctcInfoStr});
