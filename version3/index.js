@@ -90,7 +90,7 @@ class Attacher extends Player {//provide the acceptWager callback,
     this.state.resolveAcceptedP();
     this.setState({view: 'WaitingForTurn'});
   }
-  render() { return renderView(this, AttacherViews); }
+  render() { return renderView(this, AttacherViews); }//render the appropriate view from AttacherViews
 }
 
 renderDOM(<App />);
