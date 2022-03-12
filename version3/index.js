@@ -64,7 +64,7 @@ class Deployer extends Player {
     this.setState({view: 'Deploying', ctc});//set the component state to display Deploying display.
     this.wager = reach.parseCurrency(this.state.wager); // UInt provide the wager ,set the wager property
     this.deadline = {ETH: 10, ALGO: 100, CFX: 1000}[reach.connector]; // UInt deadline values,set the deadline property based on which connector is being used
-    backend.Alice(ctc, this);
+    backend.Alice(ctc, this);//start running the Reach program as Alice,
     const ctcInfoStr = JSON.stringify(await ctc.getInfo(), null, 2);
     this.setState({view: 'WaitingForAttacher', ctcInfoStr});
   }
