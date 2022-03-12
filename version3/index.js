@@ -71,7 +71,7 @@ class Deployer extends Player {
   render() { return renderView(this, DeployerViews); }//render the appropriate view from DeployerViews
 }
 class Attacher extends Player {//provide the acceptWager callback,
-  constructor(props) {
+  constructor(props) {//define some button handlers in order to attach to the deployed contract
     super(props);
     this.state = {view: 'Attach'};
   }
