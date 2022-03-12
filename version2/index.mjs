@@ -18,9 +18,15 @@ const HAND = ['Rock', 'Paper', 'Scissors'];
 const OUTCOME = ['Bob wins', 'Draw', 'Alice wins'];
 const Player = (Who) => ({
     ...stdlib.hasRandom, // <--- new!,implementation of rabdom that the frontend provides to the backend
-    getHand: () => {
+    getHand:async () => {
       const hand = Math.floor(Math.random() * 3);
       console.log(`${Who} played ${HAND[hand]}`);
+      if ( Math.random() <= 0.01 ) {
+        for ( let i = 0; i < 10; i++ ) {
+          console.log(`  ${Who} takes their sweet time sending it back...`);
+          await stdlib.wait(1);
+        }
+      }
       return hand;
     },
     seeOutcome: (outcome) => {
