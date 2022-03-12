@@ -36,9 +36,9 @@ forall(UInt, handAlice =>
     });
     init() 
 
-    const informTimeout = () => {
-      each([Alice, Bob], () => {
-        interact.informTimeout();
+    const informTimeout = () => {//defines function as arrow function
+      each([Alice, Bob], () => { //have each participant perform local step
+        interact.informTimeout();// has participants call new inforTimeout method
       });
     };
   //enable Alice publish her hand but also keep it secret using makeCommitment
@@ -47,8 +47,9 @@ forall(UInt, handAlice =>
     const _handAlice = interact.getHand();//Alice compute her hand, but not declassify it
     const [_commitAlice, _saltAlice] = makeCommitment(interact, _handAlice);//compute comitment,interact since it has salt value generated bu random func inside hasrandom
     const commitAlice = declassify(_commitAlice);//declassify commitment
+    const deadline = declassify(interact.deadline);// Alice declasify time delta
   });
-  Alice.publish(wager, commitAlice)//publish
+  Alice.publish(wager, commitAlice,deadline)//publish also the deadline
     .pay(wager);// wager fund in publication
    commit();//siko sure
 
@@ -58,7 +59,8 @@ forall(UInt, handAlice =>
     const handBob = declassify(interact.getHand());
   });
   Bob.publish(handBob)
-    .pay(wager);
+    .pay(wager)
+    .timeout(relativeTime(deadline), () => closeTo(Alice, informTimeout));//adds a timeout handler to Bob's publication
   commit();//transaction commit, without computing the payout, because we can't yet, because Alice's hand is not yet public.
   //Alice who can reveal her secrets
   Alice.only(() => {// declassify secret 
