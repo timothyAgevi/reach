@@ -36,7 +36,7 @@ exports.SetWager = class extends React.Component {
     );
   }
 }
-
+//Deploy dialog
 exports.Deploy = class extends React.Component {
   render() {
     const {parent, wager, standardUnit} = this.props;
