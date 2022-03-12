@@ -52,18 +52,18 @@ class Player extends React.Component {
   seeOutcome(i) { this.setState({view: 'Done', outcome: intToOutcome[i]}); }//display Done display
   informTimeout() { this.setState({view: 'Timeout'}); }//display timeout display
   playHand(hand) { this.state.resolveHandP(hand); }//define what happens when the user clicks Rock, Paper, or Scissors: The Promise from line 45 is resolved
-}//Deployer component 
+}//Deployer component  
 class Deployer extends Player {
   constructor(props) {
     super(props);
-    this.state = {view: 'SetWager'};
+    this.state = {view: 'SetWager'};// set the component state to display Set Wager dialog.
   }
   setWager(wager) { this.setState({view: 'Deploy', wager}); }
   async deploy() {
     const ctc = this.props.acc.contract(backend);
     this.setState({view: 'Deploying', ctc});
-    this.wager = reach.parseCurrency(this.state.wager); // UInt
-    this.deadline = {ETH: 10, ALGO: 100, CFX: 1000}[reach.connector]; // UInt
+    this.wager = reach.parseCurrency(this.state.wager); // UInt provide the wager
+    this.deadline = {ETH: 10, ALGO: 100, CFX: 1000}[reach.connector]; // UInt deadline values
     backend.Alice(ctc, this);
     const ctcInfoStr = JSON.stringify(await ctc.getInfo(), null, 2);
     this.setState({view: 'WaitingForAttacher', ctcInfoStr});
