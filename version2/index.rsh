@@ -21,6 +21,7 @@ forall(UInt, handAlice =>
     ...hasRandom, // <--- new!  ,used to generate random number to protect Alice's hand, interface that the backend expects the frontend to provide
     getHand: Fun([], UInt),
     seeOutcome: Fun([UInt], Null),
+    informTimeout: Fun([], Null),
   };
   // reach app and interfaces
   export const main = Reach.App(() => {
