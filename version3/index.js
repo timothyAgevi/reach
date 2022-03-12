@@ -4,10 +4,10 @@ import DeployerViews from './views/DeployerViews';
 import AttacherViews from './views/AttacherViews';
 import {renderDOM, renderView} from './views/render';
 import './index.css';
-import * as backend from './build/index.main.mjs';
-import {loadStdlib} from '@reach-sh/stdlib';
-const reach = loadStdlib(process.env);
-
+import * as backend from './build/index.main.mjs';//import backend
+import {loadStdlib} from '@reach-sh/stdlib';//load stdlib
+const reach = loadStdlib(process.env);//load reach ,pas process.env since does have direct acess to environment variables
+//costats and defaults
 const handToInt = {'ROCK': 0, 'PAPER': 1, 'SCISSORS': 2};
 const intToOutcome = ['Bob wins!', 'Draw!', 'Alice wins!'];
 const {standardUnit} = reach;
@@ -16,27 +16,27 @@ const defaults = {defaultFundAmt: '10', defaultWager: '3', standardUnit};
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {view: 'ConnectAccount', ...defaults};
+    this.state = {view: 'ConnectAccount', ...defaults};// initialize the component state to display
   }
-  async componentDidMount() {
-    const acc = await reach.getDefaultAccount();
+  async componentDidMount() {// yo line32hook rcomponentDidMount lifecycle 
+    const acc = await reach.getDefaultAccount();//accesses the default browser account. For example, when used with Ethereum, it can discover the currently-selected MetaMask account
     const balAtomic = await reach.balanceOf(acc);
     const bal = reach.formatCurrency(balAtomic, 4);
     this.setState({acc, bal});
-    if (await reach.canFundFromFaucet()) {
-      this.setState({view: 'FundAccount'});
+    if (await reach.canFundFromFaucet()) {//see if we can access the Reach developer testing network faucet
+      this.setState({view: 'FundAccount'});//if true,set the component state to display Fund Account dialog.
     } else {
-      this.setState({view: 'DeployerOrAttacher'});
+      this.setState({view: 'DeployerOrAttacher'});//if false,set the component state to skip to Choose Role.
     }
   }
-  async fundAccount(fundAmount) {
+  async fundAccount(fundAmount) {// lines 32 thru 35, we define what happens when the user clicks the Fund Account button
     await reach.fundFromFaucet(this.state.acc, reach.parseCurrency(fundAmount));
-    this.setState({view: 'DeployerOrAttacher'});
+    this.setState({view: 'DeployerOrAttacher'});//set the component state to display Choose Role
   }
-  async skipFundAccount() { this.setState({view: 'DeployerOrAttacher'}); }
+  async skipFundAccount() { this.setState({view: 'DeployerOrAttacher'}); }// define what to do when the user clicks the Skip button, which is to set the component state to display Choose Role.
   selectAttacher() { this.setState({view: 'Wrapper', ContentView: Attacher}); }
   selectDeployer() { this.setState({view: 'Wrapper', ContentView: Deployer}); }
-  render() { return renderView(this, AppViews); }
+  render() { return renderView(this, AppViews); }// render the appropriate view from rps-9-web/views/AppViews.js.
 }
 
 class Player extends React.Component {
