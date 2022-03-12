@@ -52,8 +52,7 @@ class Player extends React.Component {
   seeOutcome(i) { this.setState({view: 'Done', outcome: intToOutcome[i]}); }//display Done display
   informTimeout() { this.setState({view: 'Timeout'}); }//display timeout display
   playHand(hand) { this.state.resolveHandP(hand); }//define what happens when the user clicks Rock, Paper, or Scissors: The Promise from line 45 is resolved
-}
-
+}//Deployer component 
 class Deployer extends Player {
   constructor(props) {
     super(props);
