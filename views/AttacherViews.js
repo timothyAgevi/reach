@@ -47,7 +47,7 @@ exports.Attaching = class extends React.Component {
     );
   }
 }
-
+//Accept Terms dialog
 exports.AcceptTerms = class extends React.Component {
   render() {
     const {wager, standardUnit, parent} = this.props;
