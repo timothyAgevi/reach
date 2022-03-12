@@ -76,8 +76,8 @@ class Attacher extends Player {//provide the acceptWager callback,
     this.state = {view: 'Attach'};// initialize the component state to display Attach dialog
   }//lines 78 thru 82, we define what happens when the user clicks the Attach button
   attach(ctcInfoStr) {
-    const ctc = this.props.acc.contract(backend, JSON.parse(ctcInfoStr));
-    this.setState({view: 'Attaching'});
+    const ctc = this.props.acc.contract(backend, JSON.parse(ctcInfoStr));// call acc.attach
+    this.setState({view: 'Attaching'});//
     backend.Bob(ctc, this);
   }
   async acceptWager(wagerAtomic) { // Fun([UInt], Null)
