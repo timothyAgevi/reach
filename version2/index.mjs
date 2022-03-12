@@ -69,7 +69,7 @@ if (isAlice) {
     }
   };
 }
-
+// request the wager amount or define the acceptWager method, depending on if we are Alice or not.
 const HAND = ['Rock', 'Paper', 'Scissors'];
 const HANDS = {
   'Rock': 0, 'R': 0, 'r': 0,
@@ -88,12 +88,12 @@ interact.getHand = async () => {
   console.log(`You played ${HAND[hand]}`);
   return hand;
 };
-
+//define the shared getHand method
 const OUTCOME = ['Bob wins', 'Draw', 'Alice wins'];
 interact.seeOutcome = async (outcome) => {
   console.log(`The outcome is: ${OUTCOME[outcome]}`);
 };
-
+//seeOutcome method
 const part = isAlice ? ctc.p.Alice : ctc.p.Bob;
 await part(interact);
 
