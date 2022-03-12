@@ -11,6 +11,7 @@ const who = isAlice ? 'Alice' : 'Bob';
 console.log(`Starting Rock, Paper, Scissors! as ${who}`);
 
 let acc = null;
+//choice of creating a test account if they can or inputting a secret to load an existing account.
 const createAcc = await ask.ask(
   `Would you like to create an account? (only possible on devnet)`,
   ask.yesno
