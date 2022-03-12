@@ -25,7 +25,7 @@ forall(UInt, handAlice =>
   };
   // reach app and interfaces
   export const main = Reach.App(() => {
-    const Alice = Participant('Alice', {
+    const Alice = Participant('Alice', {//define Deployer as a React component for Alice, which extends Player
       ...Player,
       wager: UInt,//atomic units of currency
       deadline:UInt,//time delta(blocks/rounds),std deadline throughout tje program
