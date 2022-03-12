@@ -30,3 +30,30 @@ const Player = (Who) => ({
       console.log(`${Who} observed a timeout`);
     },
   });
+
+  await Promise.all([
+    ctcAlice.p.Alice({
+      ...Player('Alice'),
+      wager: stdlib.parseCurrency(5),
+      deadline: 10,
+    }),
+    ctcBob.p.Bob({
+      ...Player('Bob'),
+      acceptWager: async (amt) => { // <-- async now
+        if ( Math.random() <= 0.5 ) {
+          for ( let i = 0; i < 10; i++ ) {
+            console.log(`  Bob takes his sweet time...`);
+            await stdlib.wait(1);
+          }
+        } else {
+          console.log(`Bob accepts the wager of ${fmt(amt)}.`);
+        }
+      },
+    }),
+  ]);
+  
+  const afterAlice = await getBalance(accAlice);
+  const afterBob = await getBalance(accBob);
+  
+  console.log(`Alice went from ${beforeAlice} to ${afterAlice}.`);
+  console.log(`Bob went from ${beforeBob} to ${afterBob}.`);
