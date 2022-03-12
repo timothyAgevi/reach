@@ -67,7 +67,9 @@ forall(UInt, handAlice =>
     const saltAlice = declassify(_saltAlice);
     const handAlice = declassify(_handAlice);
   });
-  Alice.publish(saltAlice, handAlice);// publish secret
+  Alice.publish(saltAlice, handAlice)// publish secret
+  .timeout(relativeTime(deadline), () => closeTo(Bob, informTimeout));//timeout handler to Alice's second message
+
   checkCommitment(commitAlice, saltAlice, handAlice);//checks that the published values match the original values.
   //Always case for honest but dishonest participants may violate this
 
