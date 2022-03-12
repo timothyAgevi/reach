@@ -30,12 +30,12 @@ const Player = (Who) => ({
       console.log(`${Who} observed a timeout`);
     },
   });
-
+//cause a timeout sometimes when Bob is supposed to accept the wager
   await Promise.all([
     ctcAlice.p.Alice({
       ...Player('Alice'),
       wager: stdlib.parseCurrency(5),
-      deadline: 10,
+      deadline: 10,//Alice specify a deadline of ten blocks.
     }),
     ctcBob.p.Bob({
       ...Player('Bob'),

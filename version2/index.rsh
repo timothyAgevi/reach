@@ -28,7 +28,7 @@ forall(UInt, handAlice =>
     const Alice = Participant('Alice', {
       ...Player,
       wager: UInt,//atomic units of currency
-      deadline:UInt,//time delta(blocks/rounds)
+      deadline:UInt,//time delta(blocks/rounds),std deadline throughout tje program
     });
     const Bob   = Participant('Bob', {
       ...Player,
