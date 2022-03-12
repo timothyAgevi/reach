@@ -16,29 +16,28 @@ const createAcc = await ask.ask(
   `Would you like to create an account? (only possible on devnet)`,
   ask.yesno
 );
-if (createAcc) {
+if (createAcc) {//creates the test account as before
   acc = await stdlib.newTestAccount(stdlib.parseCurrency(1000));
 } else {
   const secret = await ask.ask(
     `What is your account secret?`,
     (x => x)
-  );
+  );//loads the existing account
   acc = await stdlib.newAccountFromSecret(secret);
 }
 
 let ctc = null;
 if (isAlice) {
   ctc = acc.contract(backend);
-  ctc.getInfo().then((info) => {
+  ctc.getInfo().then((info) => {//deploy it and print out public information (ctc.getInfo) line30- 32
     console.log(`The contract is deployed as = ${JSON.stringify(info)}`); });
-} else {
+} else {//Lines 34 through 39 request, parse, and process this information
   const info = await ask.ask(
     `Please paste the contract information:`,
     JSON.parse
   );
   ctc = acc.contract(backend, info);
 }
-
 const fmt = (x) => stdlib.formatCurrency(x, 4);
 const getBalance = async () => fmt(await stdlib.balanceOf(acc));
 
@@ -51,7 +50,7 @@ interact.informTimeout = () => {
   console.log(`There was a timeout.`);
   process.exit(1);
 };
-
+//define a timeout handler
 if (isAlice) {
   const amt = await ask.ask(
     `How much do you want to wager?`,
