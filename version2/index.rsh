@@ -15,7 +15,7 @@ forall(UInt, handAlice =>
       assert(isOutcome(winner(handAlice, handBob)))));
  //whenever the same value is provided for both hands, no matter what it is, winner always returns DRAW
  forall(UInt, (hand) =>
- assert(winner(hand, hand) == DRAW));   
+  assert(winner(hand, hand) == DRAW));   
  //frontend for each participant providing acess to random nmbers
  const Player = {
     ...hasRandom, // <--- new!  ,used to generate random number to protect Alice's hand, interface that the backend expects the frontend to provide
@@ -41,25 +41,44 @@ forall(UInt, handAlice =>
         interact.informTimeout();// has participants call new inforTimeout method
       });
     };
-  //enable Alice publish her hand but also keep it secret using makeCommitment
+   
+    Alice.only(() => {
+      const wager = declassify(interact.wager);
+      const deadline = declassify(interact.deadline);
+    });
+    Alice.publish(wager, deadline)
+      .pay(wager);
+    commit();
+  
+    Bob.only(() => {
+      interact.acceptWager(wager);
+    });
+    Bob.pay(wager)
+      .timeout(relativeTime(deadline), () => closeTo(Alice, informTimeout));
+  
+    var outcome = DRAW;
+    invariant( balance() == 2 * wager && isOutcome(outcome) );
+    while ( outcome == DRAW ) {
+      commit();
+    //enable Alice publish her hand but also keep it secret using makeCommitment
   Alice.only(() => {
-    const wager = declassify(interact.wager);
+    
     const _handAlice = interact.getHand();//Alice compute her hand, but not declassify it
     const [_commitAlice, _saltAlice] = makeCommitment(interact, _handAlice);//compute comitment,interact since it has salt value generated bu random func inside hasrandom
     const commitAlice = declassify(_commitAlice);//declassify commitment
-    const deadline = declassify(interact.deadline);// Alice declasify time delta
+    
   });
-  Alice.publish(wager, commitAlice,deadline)//publish also the deadline
-    .pay(wager);// wager fund in publication
+  Alice.publish(commitAlice)//publish also the deadline
+   .timeout(relativeTime(deadline), () => closeTo(Bob, informTimeout));
    commit();//siko sure
 
   unknowable(Bob,Alice(_handAlice,_saltAlice));//states the knowledge assertion
   Bob.only(() => {
-    interact.acceptWager(wager);
+    
     const handBob = declassify(interact.getHand());
   });
   Bob.publish(handBob)
-    .pay(wager)
+ 
     .timeout(relativeTime(deadline), () => closeTo(Alice, informTimeout));//adds a timeout handler to Bob's publication
   commit();//transaction commit, without computing the payout, because we can't yet, because Alice's hand is not yet public.
   //Alice who can reveal her secrets
@@ -69,18 +88,16 @@ forall(UInt, handAlice =>
   });
   Alice.publish(saltAlice, handAlice)// publish secret
   .timeout(relativeTime(deadline), () => closeTo(Bob, informTimeout));//timeout handler to Alice's second message
-
   checkCommitment(commitAlice, saltAlice, handAlice);//checks that the published values match the original values.
   //Always case for honest but dishonest participants may violate this
 
-const outcome = winner(handAlice,handBob);
-const                 [forAlice, forBob] =
-  outcome == A_WINS ? [       2,      0] :
-  outcome == B_WINS ? [       0,      2] :
-  /* tie           */ [       1,      1];
-transfer(forAlice * wager).to(Alice);
-transfer(forBob   * wager).to(Bob);
-commit();
+   outcome = winner(handAlice,handBob);//updates the outcome loop variable with the new value
+   continue;
+}
+
+assert(outcome == A_WINS || outcome == B_WINS);
+  transfer(2 * wager).to(outcome == A_WINS ? Alice : Bob);
+  commit();
 
 each([Alice, Bob], () => {
   interact.seeOutcome(outcome);
