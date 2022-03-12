@@ -92,5 +92,5 @@ class Attacher extends Player {//provide the acceptWager callback,
   }
   render() { return renderView(this, AttacherViews); }//render the appropriate view from AttacherViews
 }
-
+//Putting it all together
 renderDOM(<App />);
