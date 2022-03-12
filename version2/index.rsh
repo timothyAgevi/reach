@@ -27,7 +27,8 @@ forall(UInt, handAlice =>
   export const main = Reach.App(() => {
     const Alice = Participant('Alice', {
       ...Player,
-      wager: UInt,
+      wager: UInt,//atomic units of currency
+      deadline:UInt,//time delta(blocks/rounds)
     });
     const Bob   = Participant('Bob', {
       ...Player,
