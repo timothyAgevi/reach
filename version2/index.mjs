@@ -21,6 +21,7 @@ const Player = (Who) => ({
     getHand:async () => {
       const hand = Math.floor(Math.random() * 3);
       console.log(`${Who} played ${HAND[hand]}`);
+      //Lines 24 through 29 moves the forced timeout code that we wrote for Bob's acceptWager function into this method. We also change the threshold so that timeouts only happen 1% of the time. This isn't a very interesting behavior, so we'll make it much less frequent.
       if ( Math.random() <= 0.01 ) {
         for ( let i = 0; i < 10; i++ ) {
           console.log(`  ${Who} takes their sweet time sending it back...`);
