@@ -68,7 +68,7 @@ exports.AcceptTerms = class extends React.Component {
     );
   }
 }
-
+//Waiting for Turn display
 exports.WaitingForTurn = class extends React.Component {
   render() {
     return (
