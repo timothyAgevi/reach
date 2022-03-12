@@ -29,7 +29,7 @@ forall(UInt, handAlice =>
       ...Player,
       wager: UInt,//atomic units of currency
       deadline:UInt,//time delta(blocks/rounds),std deadline throughout tje program
-    });
+    });//Attacher component
     const Bob   = Participant('Bob', {
       ...Player,
       acceptWager: Fun([UInt], Null),
