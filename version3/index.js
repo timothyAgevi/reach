@@ -58,7 +58,7 @@ class Deployer extends Player {
     super(props);
     this.state = {view: 'SetWager'};// set the component state to display Set Wager dialog.
   }
-  setWager(wager) { this.setState({view: 'Deploy', wager}); }
+  setWager(wager) { this.setState({view: 'Deploy', wager}); }//set component state to display Deploy dialog when user click Deploy button
   async deploy() {
     const ctc = this.props.acc.contract(backend);
     this.setState({view: 'Deploying', ctc});
