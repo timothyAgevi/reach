@@ -6,6 +6,8 @@ import {renderDOM, renderView} from './views/render';
 import './index.css';
 import * as backend from './build/index.main.mjs';//import backend
 import {loadStdlib} from '@reach-sh/stdlib';//load stdlib
+
+reach.setWalletFallback(reach.walletFallback({}));
 // const stdlib =loadStdlib();//error
 // import MyAlgoConnect from '@reach-sh/stdlib/ALGO_MyAlgoConnect';
 // stdlib.setWalletFallback(stdlib.walletFallback({
