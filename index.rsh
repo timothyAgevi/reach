@@ -1,77 +1,100 @@
 'reach 0.1';
-//enumerations for the hands that may be played, as well as the outcomes of the game
+// enumerations for the hands that may be played, as well as the outcomes of the game
 const [ isHand, ROCK, PAPER, SCISSORS ] = makeEnum(3);
 const [ isOutcome, B_WINS, DRAW, A_WINS ] = makeEnum(3);
-// function that computes the winner of the game
+//function that computes the winner of the game.
 const winner = (handAlice, handBob) =>
   ((handAlice + (4 - handBob)) % 3);
-//participant interact interface that will be shared between the two players.line3-6
-const Player = {
+//when rock paper scrosor win,loss.draw
+assert(winner(ROCK, PAPER) == B_WINS);
+assert(winner(PAPER, ROCK) == A_WINS);
+assert(winner(ROCK, ROCK) == DRAW);
+//no matter what values are provided for handAlice and handBob, winner will always provide a valid outcome:
+forall(UInt, handAlice =>
+    forall(UInt, handBob =>
+      assert(isOutcome(winner(handAlice, handBob)))));
+ //whenever the same value is provided for both hands, no matter what it is, winner always returns DRAW
+ forall(UInt, (hand) =>
+  assert(winner(hand, hand) == DRAW));   
+ //frontend for each participant providing acess to random nmbers
+ const Player = {
+    ...hasRandom, // <--- new!  ,used to generate random number to protect Alice's hand, interface that the backend expects the frontend to provide
     getHand: Fun([], UInt),
     seeOutcome: Fun([UInt], Null),
+    informTimeout: Fun([], Null),//inform frontend to be informed thattimeout occured
   };
-export const main = Reach.App(() => {
-  const Alice = Participant('Alice', {
-    // Specify Alice's interact interface here
-    ...Player,
-    wager: UInt,
-  });
-  const Bob   = Participant('Bob', {
-   // Specify Bob's interact interface here
-   ...Player,
-   acceptWager: Fun([UInt], Null),//accept wager from Alice
-  });
+  // reach app and interfaces
+  export const main = Reach.App(() => {
+    const Alice = Participant('Alice', {//define Deployer as a React component for Alice, which extends Player
+      ...Player,
+      wager: UInt,//atomic units of currency
+      deadline:UInt,//time delta(blocks/rounds),std deadline throughout tje program
+    });//Attacher component
+    const Bob   = Participant('Bob', {
+      ...Player,
+      acceptWager: Fun([UInt], Null),
+    });
+    init() 
+
+    const informTimeout = () => {//defines function as arrow function
+      each([Alice, Bob], () => { //have each participant perform local step
+        interact.informTimeout();// has participants call new inforTimeout method
+      });
+    };
+   
+    Alice.only(() => {
+      const wager = declassify(interact.wager);
+      const deadline = declassify(interact.deadline);
+    });
+    Alice.publish(wager, deadline)
+      .pay(wager);
+    commit();
   
-  init();  // write your program here
-  Alice.only( ()=>{//code performed by alice only
-      //he backend for Alice interacts with its frontend, gets Alice's hand, and publishes it
-      const wager =declassify(interact.wager);
-      const handAlice = declassify(interact.getHand());// binds that value to the result of interacting with Alice 
-  })
-   //lice join the application by publishing the value to the consensus network, so it can be used to evaluate the outcome of the game
-   Alice.publish(wager,handAlice)
-      .pay(wager);//r transfer the amount as part of her publication
-  commit();//commits the state of the consensus network and returns to "local step" where individual participants can act alone.
-  unknowable(Bob, Alice(handAlice));
-
-  Bob.only( ()=>{
-    interact.acceptWager(wager);
+    Bob.only(() => {//Bob pay the wager
+      interact.acceptWager(wager);
+    });
+    Bob.pay(wager)
+      .timeout(relativeTime(deadline), () => closeTo(Alice, informTimeout));
+  //does not have this consensus step commit
+    var outcome = DRAW;
+    invariant( balance() == 2 * wager && isOutcome(outcome) );//tates the invariant that the body of the loop does not change the balance in the contract account and that outcome is a valid outcome
+    while ( outcome == DRAW ) {//continues as long as the outcome is a draw
+      commit();//commits the last transaction, which at the start of the loop is Bob's acceptance of the wager, and at subsequent runs of the loop is Alice's publication of her hand.
+    //enable Alice publish her hand but also keep it secret using makeCommitment
+  Alice.only(() => {
+    const _handAlice = interact.getHand();//Alice compute her hand, but not declassify it
+    const [_commitAlice, _saltAlice] = makeCommitment(interact, _handAlice);//compute comitment,interact since it has salt value generated bu random func inside hasrandom
+    const commitAlice = declassify(_commitAlice);//declassify commitment
+      });
+  Alice.publish(commitAlice)//publish also the deadline
+   .timeout(relativeTime(deadline), () => closeTo(Bob, informTimeout));
+   commit();//siko sure
+//line64 t0 71 wager is already known and paid.
+  unknowable(Bob,Alice(_handAlice,_saltAlice));//states the knowledge assertion
+  Bob.only(() => {
     const handBob = declassify(interact.getHand());
-    //if we putconst handBob = (handAlice + 1) % 3; above,bob will win always since he never consults the frontend and so it never prints out the message of what hand Bob played
-});
-Bob.publish(handBob)
-.pay(wager)
-const outcome =(handAlice + (4 - handBob)) % 3 ;// computes outcome
-/* onsider when handAlice is 0 (i.e., Rock) and handBob is 2 (i.e., Scissors),
- then this equation is ((handAlice + (4 - handBob)) % 3) = ((0 + (4 - 2)) % 3) = ((0 + 2) % 3) = (2 % 3) = 2*/
- const [ forAlice,forBob]=outcome==2?[ 2,0]:outcome == 0?[ 0,2]:[1,1];/*compute the amounts given to each participant depending on the outcome by
-  determining how many wager amounts each party gets
-
-- If the outcome is 2, Alice wins, then she gets two portions; 
-while if it is 0, Bob wins, then he gets two portions; 
-otherwise they each get one portion
-  */
-
-//transfer the corresponding amounts from contract to participants,
-//not from participats from each other.since all funds reside inside contract(line 48,49)
-transfer(forAlice * wager).to(Alice);
-  transfer(forBob   * wager).to(Bob);
-commit();
-each([Alice, Bob], () => { //local step that each of the participants performs
-    interact.seeOutcome(outcome);
   });
+  Bob.publish(handBob)
+     .timeout(relativeTime(deadline), () => closeTo(Alice, informTimeout));//adds a timeout handler to Bob's publication
+  commit();//transaction commit, without computing the payout, because we can't yet, because Alice's hand is not yet public.
+  //Alice who can reveal her secrets
+  Alice.only(() => {// declassify secret 
+    const saltAlice = declassify(_saltAlice);
+    const handAlice = declassify(_handAlice);
+  });
+  Alice.publish(saltAlice, handAlice)// publish secret
+  .timeout(relativeTime(deadline), () => closeTo(Bob, informTimeout));//timeout handler to Alice's second message
+  checkCommitment(commitAlice, saltAlice, handAlice);//checks that the published values match the original values.
+  //Always case for honest but dishonest participants may violate this
+   outcome = winner(handAlice,handBob);//updates the outcome loop variable with the new value
+   continue;//Reach requires that continue be explicitly written in the loop body
+}
+
+assert(outcome == A_WINS || outcome == B_WINS);
+  transfer(2 * wager).to(outcome == A_WINS ? Alice : Bob);
+  commit();
+
+each([Alice, Bob], () => {
+  interact.seeOutcome(outcome);
 });
-
-
-
-//note: Alice and Bob's balances go back to 100 every time we run since  it  creates fresh a/c
-// Alice win slightly less than Bob when she wins? She has to pay to deploy the contract, because she publishes the first message in her frontend
-
-
-
-/*important :Reach programs dont manage tokens instead we Pay and transfer primitives are added to publish primitive.Address
-pay:send funds to reach program,
-transfer:send funds backto participants
-*/
-//building a version of Rock, Paper, Scissors! where two players,
-// Alice and Bob, can wager on the result of the game
+});
