@@ -6,14 +6,12 @@ import {renderDOM, renderView} from './views/render';
 import './index.css';
 import * as backend from './build/index.main.mjs';//import backend
 import {loadStdlib} from '@reach-sh/stdlib';//load stdlib
-
-// const stdlib =loadStdlib();//error
-// import MyAlgoConnect from '@reach-sh/stdlib/ALGO_MyAlgoConnect';
-// stdlib.setWalletFallback(stdlib.walletFallback({
-//   providerEnv: 'TestNet', MyAlgoConnect }));
 const reach = loadStdlib(process.env);//load reach ,pas process.env since does have direct acess to environment variables
-//costats and defaults
-reach.setWalletFallback(reach.walletFallback({}));
+//setting wallback to myalgo wallet
+import { ALGO_MyAlgoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
+reach.setWalletFallback(reach.walletFallback({
+    providerEnv: 'TestNet', MyAlgoConnect }));
+
 
 const handToInt = {'ROCK': 0, 'PAPER': 1, 'SCISSORS': 2};
 const intToOutcome = ['Bob wins!', 'Draw!', 'Alice wins!'];
